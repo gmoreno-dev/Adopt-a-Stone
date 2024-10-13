@@ -155,7 +155,7 @@ app.get('/get-stones', async (req, res) => {
 
 
 // Start the Server (Move this to the end)
-const PORT = 3000;
+const PORT = 8080;
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}.`);
 });
