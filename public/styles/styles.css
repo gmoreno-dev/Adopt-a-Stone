@@ -1,0 +1,125 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: "Afacad Flux", sans-serif;
+}
+
+.wrapper {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  font-family: "Afacad Flux", sans-serif;
+}
+
+body {
+
+  font-family: "Afacad Flux", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:
+    "slnt" 0;
+
+  text-align: center;
+  background-color: #222831;
+  color: #EEEEEE;
+}
+
+header {
+  background-color: #222831;
+  color: #EEEEEE;
+  padding: 10px 0;
+}
+
+footer {
+  background-color: #222831;
+  color: #EEEEEE;
+  text-align: center;
+  padding: 10px 0;
+  margin-bottom: 0;
+}
+
+main {
+  padding: 20px;
+}
+
+#monte-de-pedras {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 20px 0;
+  border: none;
+  background-color: transparent;
+}
+
+.pedra {
+  width: 50px;
+  height: 50px;
+  background-color: gray;
+  margin: 5px;
+  border-radius: 50%;
+  text-align: center;
+}
+
+.pedra .nome{
+  position: absolute;
+  bottom: -20px;
+  width: 100%;
+  font-size: 10px;
+  text-align: center;
+}
+
+#adotar-pedra{
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: "Afacad Flux", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  background-color: #EEEEEE;
+}
+
+#personalizar-pedra{
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: "Afacad Flux", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  background-color: #EEEEEE;
+}
+
+* Estilização do formulário na success.html */
+#form-personalizar {
+  max-width: 400px;
+  margin: 20px auto;
+}
+
+#form-personalizar label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+#form-personalizar input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+#form-personalizar button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+#form-personalizar button:hover {
+  background-color: #218838;
+}

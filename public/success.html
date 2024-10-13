@@ -1,0 +1,35 @@
+<!-- success.html -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Pagamento Bem-sucedido</title>
+  <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+  <h1>Obrigado pela sua doação!</h1>
+  <p>Preencha as informações abaixo para personalizar sua pedra.</p>
+  
+  <form id="form-personalizar">
+
+    <label for="nome">Nome na Pedra:</label>
+    <input type="text" id="nome" name="nome" maxlength="20" required />
+
+    <label for="localizacao">Localização (cidade/estado/país):</label>
+    <input type="text" id="localizacao" name="localizacao" maxlength="20" required />
+
+    <label for="descricao">Descrição:</label>
+    <input type="text" id="descricao" name="descricao" maxlength="20" required />
+
+
+    <button type="submit">Enviar</button>
+  </form>
+
+  <!-- Inclua o Matter.js antes dos seus scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+
+  <!-- Scripts -->
+  <script type="module" src="./scripts/script.js"></script>
+</body>
+</html>
