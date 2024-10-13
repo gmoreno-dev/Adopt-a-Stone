@@ -13,14 +13,16 @@ const mongoose = require('mongoose');
 const DOMAIN = process.env.DOMAIN || `https://${process.env.RENDER_EXTERNAL_HOSTNAME}`;
 // MongoDB Connection
 const mongoURI = process.env.MONGODB_URI;
-mongoose
-  .connect(mongoURI)
-  .then(() => {
-    console.log('Conectado ao MongoDB Atlas.');
-  })
-  .catch((error) => {
-    console.error('Erro ao conectar ao MongoDB Atlas:', error);
-  });
+mongoose.connect(mongoURI, {
+  tls: true,
+  tlsAllowInvalidCertificates: true,
+})
+.then(() => {
+  console.log('Conectado ao MongoDB Atlas.');
+})
+.catch((error) => {
+  console.error('Erro ao conectar ao MongoDB Atlas:', error);
+});
 
 
 // Session Middleware Setup
