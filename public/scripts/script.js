@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const minhaPedraDiv = document.getElementById('minha-pedra');
 
     // Inicializa o Stripe com sua chave pública
-    const stripe = Stripe('SUA_CHAVE_PUBLICA_DO_STRIPE'); // Substitua pela sua chave pública
+    const stripe = Stripe(process.env.STRIPE_PUBLIC_KEY); // Substitua pela sua chave pública
 
     // Função para adotar uma pedra
     function adotarPedra() {
