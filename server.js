@@ -76,7 +76,7 @@ app.post('/create-checkout-session', async (req, res) => {
           product_data: {
             name: 'Adopt a Stone',
           },
-          unit_amount: 200,
+          unit_amount: 100,
         },
         quantity: 1,
       }],
@@ -155,7 +155,7 @@ app.get('/get-stones', async (req, res) => {
 
 
 // Start the Server (Move this to the end)
-const PORT = 8080;
+const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}.`);
 });
