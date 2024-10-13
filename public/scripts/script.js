@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const minhaPedraDiv = document.getElementById('minha-pedra');
 
     // Inicializa o Stripe com sua chave pública
-    const stripe = Stripe('pk_test_51Q6a6o083GKZ9SEh6e5VFtUgiNSxxqMiYpOtH8tCgJwajtGJHlhcdyc4GJAJCCB99iZ5lSLGK3CnPhnWxhsHZW9A00tL8Wd53S'); // Substitua pela sua chave pública
+    const stripe = Stripe('SUA_CHAVE_PUBLICA_DO_STRIPE'); // Substitua pela sua chave pública
 
     // Função para adotar uma pedra
     function adotarPedra() {
@@ -72,6 +72,19 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Erro ao carregar as pedras do servidor:', error);
       });
 
+    // Carregar o valor total de doações
+    fetch('/get-total-donations')
+      .then((response) => response.json())
+      .then((data) => {
+        const totalDonationsDiv = document.getElementById('total-donations');
+        if (totalDonationsDiv) {
+          totalDonationsDiv.textContent = `Total Donations: $${data.total.toFixed(2)}`;
+        }
+      })
+      .catch((error) => {
+        console.error('Erro ao obter o total de doações:', error);
+      });
+
     // Verificar se há informações de pedra no localStorage
     const pedraInfoString = localStorage.getItem('pedraInfo');
     if (pedraInfoString) {
@@ -84,7 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (pathname.endsWith('/success.html')) {
-    // No need to check sessionStorage
     const form = document.getElementById('form-personalizar');
     if (form) {
       form.addEventListener('submit', (event) => {
@@ -92,12 +104,12 @@ document.addEventListener('DOMContentLoaded', () => {
         let nome = document.getElementById('nome').value;
         let localizacao = document.getElementById('localizacao').value;
         let descricao = document.getElementById('descricao').value;
-      
-        // Ensure fields are limited to 20 characters
-        nome = nome.substring(0, 20);
-        localizacao = localizacao.substring(0, 20);
-        descricao = descricao.substring(0, 20);
-  
+
+        // Ensure fields are limited to 40 characters
+        nome = nome.substring(0, 40);
+        localizacao = localizacao.substring(0, 40);
+        descricao = descricao.substring(0, 40);
+
         if (nome && localizacao && descricao) {
           // Save stone info and redirect
           const pedraInfo = { nome, localizacao, descricao };
@@ -110,6 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 });
+
 // Função para criar a pedra com as informações fornecidas
 function criarPedra(nome, localizacao, descricao) {
   // Seleciona uma imagem de pedra aleatória
@@ -134,7 +147,7 @@ function criarPedra(nome, localizacao, descricao) {
 
     // Cria a pedra com a imagem como textura
     const pedra = Matter.Bodies.circle(
-      Math.random() * 940 + 30, // Ajuste conforme a largura do canvas
+      Math.random() * (window.innerWidth - 60) + 30, // Ajuste para largura da janela
       -30, // Posição Y acima da tela
       raio,
       {
@@ -173,7 +186,6 @@ function criarPedra(nome, localizacao, descricao) {
       descricao: descricao,
       x: pedra.position.x,
       y: pedra.position.y,
-      // Não incluímos o userCode aqui, ele será gerado no servidor
     };
 
     fetch('/save-stone', {
@@ -228,7 +240,7 @@ function carregarPedra(stoneData) {
 
     // Cria a pedra com a imagem como textura
     const pedra = Matter.Bodies.circle(
-      x || Math.random() * 940 + 30,
+      x || Math.random() * (window.innerWidth - 60) + 30,
       y || -30,
       raio,
       {
@@ -239,17 +251,16 @@ function carregarPedra(stoneData) {
             xScale: xScale,
             yScale: yScale,
           },
-          // Inicialmente sem destaque
           lineWidth: 1,
           strokeStyle: 'black',
         },
         label: nome,
-        isStone: true, // Marca o corpo como uma pedra
+        isStone: true,
         customData: {
           nome: nome,
           localizacao: localizacao,
           descricao: descricao,
-          userCode: userCode, // Inclui o código do usuário
+          userCode: userCode,
         },
       }
     );
@@ -262,4 +273,3 @@ function carregarPedra(stoneData) {
     console.error('Erro ao carregar a imagem da pedra:', imagem);
   };
 }
-

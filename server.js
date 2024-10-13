@@ -67,11 +67,6 @@ app.get('/cancel.html', (req, res) => {
 
 // Endpoint para criar uma sessão de checkout
 app.post('/create-checkout-session', async (req, res) => {
-
-    // Generate a unique session ID
-    const paymentSessionId = Math.random().toString(36).substring(2, 15);
-    req.session.paymentSessionId = paymentSessionId;
-  
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -81,12 +76,12 @@ app.post('/create-checkout-session', async (req, res) => {
           product_data: {
             name: 'Adopt a Stone',
           },
-          unit_amount: 100,
+          unit_amount: 200,
         },
         quantity: 1,
       }],
       mode: 'payment',
-      success_url: `${DOMAIN}/success.html?session_id=${paymentSessionId}`,
+      success_url: `${DOMAIN}/success.html`,
       cancel_url: `${DOMAIN}/cancel.html`,
     });
 
@@ -95,6 +90,31 @@ app.post('/create-checkout-session', async (req, res) => {
     console.error('Erro ao criar sessão de checkout:', error);
     res.status(500).json({ error: error.message });
   }
+});
+
+// Webhook para registrar a doação após o pagamento
+app.post('/webhook', express.raw({ type: 'application/json' }), (request, response) => {
+  const sig = request.headers['stripe-signature'];
+
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(request.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+  } catch (err) {
+    console.error('Erro no webhook:', err.message);
+    return response.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  // Manipular o evento de pagamento bem-sucedido
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object;
+
+    // Registrar a doação no banco de dados
+    const donation = new Donation({ amount: session.amount_total / 100 });
+    donation.save().catch((err) => console.error('Erro ao salvar a doação:', err));
+  }
+
+  response.status(200).end();
 });
 
 // Rota para salvar uma nova pedra
@@ -153,3 +173,10 @@ const stoneSchema = new mongoose.Schema({
 
 const Stone = mongoose.model('Stone', stoneSchema);
 
+// Modelo de Doação
+const donationSchema = new mongoose.Schema({
+  amount: Number,
+  date: { type: Date, default: Date.now },
+});
+
+const Donation = mongoose.model('Donation', donationSchema);

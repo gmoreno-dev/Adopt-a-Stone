@@ -1,3 +1,4 @@
+// rocks.js
 
 // ======================================================================
 //                          FÍSICA DAS PEDRAS
@@ -12,16 +13,19 @@ let renderGlobal;
 
 // Função para inicializar a física das pedras
 export function iniciarFisicaDasPedras() {
+  // Obter a largura e altura da janela
+  const largura = window.innerWidth;
+  const altura = window.innerHeight * 0.6; // Usar 60% da altura da janela
+
   // Cria o renderizador
   const render = Matter.Render.create({
     element: document.getElementById("monte-de-pedras"),
     engine: engine,
     options: {
-      width: 1000,
-      height: 600,
+      width: largura,
+      height: altura,
       wireframes: false,
       background: "transparent",
-      // ... outras opções
     },
   });
 
@@ -36,9 +40,9 @@ export function iniciarFisicaDasPedras() {
   renderGlobal = render;
 
   // Cria o chão e paredes com a propriedade isWall
-  const chao = Matter.Bodies.rectangle(500, 610, 1020, 60, { isStatic: true, isWall: true });
-  const paredeEsquerda = Matter.Bodies.rectangle(-10, 300, 60, 600, { isStatic: true, isWall: true });
-  const paredeDireita = Matter.Bodies.rectangle(1010, 300, 60, 600, { isStatic: true, isWall: true });
+  const chao = Matter.Bodies.rectangle(largura / 2, altura + 30, largura + 40, 60, { isStatic: true, isWall: true });
+  const paredeEsquerda = Matter.Bodies.rectangle(-20, altura / 2, 60, altura, { isStatic: true, isWall: true });
+  const paredeDireita = Matter.Bodies.rectangle(largura + 20, altura / 2, 60, altura, { isStatic: true, isWall: true });
 
   // Adiciona ao mundo
   Matter.World.add(world, [chao, paredeEsquerda, paredeDireita]);
@@ -70,7 +74,20 @@ export function iniciarFisicaDasPedras() {
 
   // Adicionar eventos de mouse
   adicionarEventosDeMouse();
+
+  // Atualizar o tamanho do canvas ao redimensionar a janela
+  window.addEventListener('resize', () => {
+    const novaLargura = window.innerWidth;
+    const novaAltura = window.innerHeight * 0.6;
+    render.canvas.width = novaLargura;
+    render.canvas.height = novaAltura;
+    Matter.Body.setPosition(chao, { x: novaLargura / 2, y: novaAltura + 30 });
+    Matter.Body.setPosition(paredeEsquerda, { x: -20, y: novaAltura / 2 });
+    Matter.Body.setPosition(paredeDireita, { x: novaLargura + 20, y: novaAltura / 2 });
+  });
 }
+
+// Restante do código permanece o mesmo...
 
 // Função para adicionar eventos de mouse
 function adicionarEventosDeMouse() {
@@ -94,11 +111,11 @@ function adicionarEventosDeMouse() {
   Matter.Events.on(mouseConstraint, 'mousemove', function (event) {
     const mousePosition = event.mouse.position;
     const bodies = Matter.Composite.allBodies(engine.world);
-  
+
     // Verifica se o mouse está sobre alguma pedra
     const pedras = bodies.filter((body) => body.isStone);
     const pedraEncontrada = Matter.Query.point(pedras, mousePosition)[0];
-  
+
     if (pedraEncontrada && pedraAtual !== pedraEncontrada) {
       pedraAtual = pedraEncontrada;
       mostrarInformacoesPedra(pedraAtual, mousePosition);
@@ -107,9 +124,7 @@ function adicionarEventosDeMouse() {
       removerInformacoesPedra();
     }
   });
-  
 }
-
 
 // Função para mostrar as informações da pedra
 function mostrarInformacoesPedra(pedra, position) {
@@ -117,12 +132,7 @@ function mostrarInformacoesPedra(pedra, position) {
   if (!infoDiv) {
     infoDiv = document.createElement('div');
     infoDiv.id = 'info-pedra';
-    infoDiv.style.position = 'absolute';
-    infoDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-    infoDiv.style.color = 'white';
-    infoDiv.style.padding = '10px';
-    infoDiv.style.borderRadius = '5px';
-    infoDiv.style.pointerEvents = 'none';
+    infoDiv.className = 'info-pedra';
     document.body.appendChild(infoDiv);
   }
   atualizarPosicaoInfoPedra(infoDiv, position);
@@ -132,6 +142,7 @@ function mostrarInformacoesPedra(pedra, position) {
     <p><strong>Descrição:</strong> ${pedra.customData.descricao}</p>
   `;
 }
+
 // Função para remover as informações da pedra
 function removerInformacoesPedra() {
   const infoDiv = document.getElementById('info-pedra');
@@ -140,14 +151,13 @@ function removerInformacoesPedra() {
   }
 }
 
-
 // Função para atualizar a posição das informações da pedra
 function atualizarPosicaoInfoPedra(div, position) {
   const canvasBounds = renderGlobal.canvas.getBoundingClientRect();
+  const scrollY = window.scrollY || window.pageYOffset;
   div.style.left = canvasBounds.left + position.x + 15 + 'px';
-  div.style.top = canvasBounds.top + position.y + 15 + 'px';
+  div.style.top = canvasBounds.top + position.y + scrollY + 15 + 'px';
 }
-
 
 // Função para adicionar uma pedra ao mundo
 export function adicionarPedra(pedra) {

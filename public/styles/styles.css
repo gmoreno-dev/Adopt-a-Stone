@@ -1,3 +1,5 @@
+/* styles.css */
+
 html, body {
   height: 100%;
   margin: 0;
@@ -16,14 +18,11 @@ main {
 }
 
 body {
-
   font-family: "Afacad Flux", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
-  font-variation-settings:
-    "slnt" 0;
-
+  font-variation-settings: "slnt" 0;
   text-align: center;
   background-color: #222831;
   color: #EEEEEE;
@@ -33,6 +32,7 @@ header {
   background-color: #222831;
   color: #EEEEEE;
   padding: 10px 0;
+  position: relative;
 }
 
 footer {
@@ -65,7 +65,7 @@ main {
   text-align: center;
 }
 
-.pedra .nome{
+.pedra .nome {
   position: absolute;
   bottom: -20px;
   width: 100%;
@@ -73,7 +73,7 @@ main {
   text-align: center;
 }
 
-#adotar-pedra{
+#adotar-pedra {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
@@ -81,9 +81,11 @@ main {
   font-optical-sizing: auto;
   font-weight: 600;
   background-color: #EEEEEE;
+  border: none;
+  margin-bottom: 20px;
 }
 
-#personalizar-pedra{
+#personalizar-pedra {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
@@ -91,9 +93,10 @@ main {
   font-optical-sizing: auto;
   font-weight: 600;
   background-color: #EEEEEE;
+  border: none;
 }
 
-* Estilização do formulário na success.html */
+/* Estilização do formulário na success.html */
 #form-personalizar {
   max-width: 400px;
   margin: 20px auto;
@@ -122,4 +125,52 @@ main {
 
 #form-personalizar button:hover {
   background-color: #218838;
+}
+
+/* Tooltip das informações da pedra */
+.info-pedra {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  pointer-events: none;
+  max-width: 250px;
+  word-wrap: break-word;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  #adotar-pedra {
+    width: 80%;
+    font-size: 14px;
+  }
+
+  #monte-de-pedras {
+    margin: 10px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 24px;
+  }
+
+  #adotar-pedra {
+    width: 90%;
+    font-size: 14px;
+  }
+
+  main h1 {
+    font-size: 18px;
+  }
+}
+
+/* Estilização do total de doações */
+#total-donations {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 16px;
+  font-weight: bold;
 }

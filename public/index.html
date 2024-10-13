@@ -3,45 +3,44 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
     <title>Monte de Pedras Virtuais</title>
     <link rel="stylesheet" href="../styles/styles.css" />
-
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&display=swap');
-      </style>
-
-      <!-- Física 2D (Matter) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.17.1/matter.min.js"></script>
-
-
+    <!-- Fonte personalizada -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Matter.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
   </head>
   <body>
     <div class="wrapper">
-    <header>
-      <h1>Pile of virtual Stones</h1>
-    </header>
+      <header>
+        <h1>Pile of Virtual Stones</h1>
+        <!-- Valor total de doações -->
+        <div id="total-donations">Total Donations: $0.00</div>
+      </header>
 
-    <main>
-      <div id="monte-de-pedras"></div>
-      <h1>Adopt a stone and help me with my new projects!</h1>
-      <button id="adotar-pedra">Adopt a stone</button>
-      <div id="minha-pedra"></div>
-      
-    </main>
+      <main>
+        <div id="monte-de-pedras"></div>
+        <h1>Adopt a stone and help me with my new projects!</h1>
+        <button id="adotar-pedra">Adopt a stone</button>
+        <div id="minha-pedra"></div>
+      </main>
 
-    <footer>
-      <p>© 2024 Gabriel Moreno</p>
-    </footer>
-
-
-    <!-- Inclua o Matter.js antes dos seus scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+      <footer>
+        <p>© 2024 Gabriel Moreno</p>
+      </footer>
+    </div>
 
     <!-- Stripe.js -->
     <script src="https://js.stripe.com/v3/"></script>
 
+    <!-- Scripts -->
     <script type="module" src="./scripts/script.js"></script>
-
   </body>
 </html>
