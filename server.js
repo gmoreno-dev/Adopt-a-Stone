@@ -16,14 +16,10 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => {
-    console.log('Conectado ao MongoDB Atlas.');
-  })
   .catch((error) => {
     console.error('Erro ao conectar ao MongoDB Atlas:', error);
   });
 
-console.log('Iniciando servidor...');
 
 // **Session Middleware Setup (Move this here)**
 app.use(
@@ -39,11 +35,8 @@ app.use(
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-console.log('Middlewares configurados.');
-
 // Routes (Place after middleware setup)
 app.get('/', (req, res) => {
-  console.log('Requisição recebida na rota /.');
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
@@ -62,13 +55,11 @@ app.get('/success.html', (req, res) => {
 
 // Rota para o cancel.html
 app.get('/cancel.html', (req, res) => {
-  console.log('Requisição recebida na rota /cancel.html.');
   res.sendFile(path.join(__dirname, 'public', 'cancel.html'));
 });
 
 // Endpoint para criar uma sessão de checkout
 app.post('/create-checkout-session', async (req, res) => {
-  console.log('Requisição POST recebida em /create-checkout-session.');
 
     // Generate a unique session ID
     const paymentSessionId = Math.random().toString(36).substring(2, 15);
@@ -101,7 +92,6 @@ app.post('/create-checkout-session', async (req, res) => {
 
 // Rota para salvar uma nova pedra
 app.post('/save-stone', async (req, res) => {
-  console.log('Requisição POST recebida em /save-stone.');
   let newStone = req.body;
 
   try {
@@ -115,7 +105,6 @@ app.post('/save-stone', async (req, res) => {
 
     const stone = new Stone(newStone);
     await stone.save();
-    console.log('Pedra salva no banco de dados.');
 
     // Enviar o userCode de volta ao cliente
     res.json({ message: 'Pedra salva com sucesso', userCode: userCode });
@@ -128,7 +117,6 @@ app.post('/save-stone', async (req, res) => {
 
 // Rota para obter todas as pedras
 app.get('/get-stones', async (req, res) => {
-  console.log('Requisição GET recebida em /get-stones.');
   try {
     const stones = await Stone.find({});
     res.json(stones);
@@ -149,7 +137,6 @@ app.use(
 
 // Start the Server (Move this to the end)
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}.`));
 
 // Mongoose Schema and Model
 const stoneSchema = new mongoose.Schema({

@@ -184,9 +184,6 @@ function criarPedra(nome, localizacao, descricao) {
       body: JSON.stringify(pedraParaSalvar),
     })
       .then((response) => response.json())
-      .then((data) => {
-        console.log('Pedra salva no servidor:', data);
-      })
       .catch((error) => {
         console.error('Erro ao salvar a pedra no servidor:', error);
       });
