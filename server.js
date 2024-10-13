@@ -9,6 +9,7 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const bodyParser = require('body-parser');
 const path = require('path');
 const mongoose = require('mongoose');
+const DOMAIN = process.env.DOMAIN || 'http://localhost:3000';
 // MongoDB Connection
 const mongoURI = process.env.MONGODB_URI;
 mongoose
@@ -27,7 +28,9 @@ app.use(
     secret: process.env.SECRET_KEY || 'your_default_secret', // Ensure this is set
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 60000 }, // Session expires after 1 minute
+    cookie: {
+      secure: true, // Requires HTTPS
+      maxAge: 60000, }, // Session expires after 1 minute
   })
 );
 
@@ -79,8 +82,8 @@ app.post('/create-checkout-session', async (req, res) => {
         quantity: 1,
       }],
       mode: 'payment',
-      success_url: `http://localhost:3000/success.html?session_id=${paymentSessionId}`,
-      cancel_url: 'http://localhost:3000/cancel.html',
+      success_url: `${DOMAIN}/success.html?session_id=${paymentSessionId}`,
+      cancel_url: `${DOMAIN}/cancel.html`,
     });
 
     res.json({ id: session.id });
@@ -150,3 +153,4 @@ const stoneSchema = new mongoose.Schema({
 });
 
 const Stone = mongoose.model('Stone', stoneSchema);
+
