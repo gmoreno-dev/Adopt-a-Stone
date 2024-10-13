@@ -14,9 +14,9 @@ const DOMAIN = process.env.DOMAIN || `https://${process.env.RENDER_EXTERNAL_HOST
 // MongoDB Connection
 const mongoURI = process.env.MONGODB_URI;
 mongoose
-  .connect(mongoURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+  .connect(mongoURI)
+  .then(() => {
+    console.log('Conectado ao MongoDB Atlas.');
   })
   .catch((error) => {
     console.error('Erro ao conectar ao MongoDB Atlas:', error);
@@ -133,17 +133,12 @@ app.get('/get-stones', async (req, res) => {
   }
 });
 
-app.use(
-  session({
-    secret: process.env.SECRET_KEY, // Replace with a secure key
-    resave: false,
-    saveUninitialized: false,
-    cookie: { maxAge: 60000 }, // Session expires after 1 minute
-  })
-);
 
 // Start the Server (Move this to the end)
 const PORT = process.env.PORT || 10000;
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}.`);
+});
 
 // Mongoose Schema and Model
 const stoneSchema = new mongoose.Schema({
