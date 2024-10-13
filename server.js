@@ -4,12 +4,13 @@ require('dotenv').config();
 
 const express = require('express');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const app = express();
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const bodyParser = require('body-parser');
 const path = require('path');
 const mongoose = require('mongoose');
-const DOMAIN = process.env.DOMAIN || 'http://localhost:3000';
+const DOMAIN = process.env.DOMAIN || `https://${process.env.RENDER_EXTERNAL_HOSTNAME}`;
 // MongoDB Connection
 const mongoURI = process.env.MONGODB_URI;
 mongoose
@@ -22,15 +23,18 @@ mongoose
   });
 
 
-// **Session Middleware Setup (Move this here)**
+// Session Middleware Setup
 app.use(
   session({
-    secret: process.env.SECRET_KEY || 'your_default_secret', // Ensure this is set
+    secret: process.env.SECRET_KEY || 'your_default_secret',
     resave: false,
     saveUninitialized: false,
-    cookie: {
-      secure: true, // Requires HTTPS
-      maxAge: 60000, }, // Session expires after 1 minute
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB_URI,
+      // Optional settings
+      ttl: 14 * 24 * 60 * 60, // Session expiration in seconds (14 days)
+    }),
+    cookie: { maxAge: 14 * 24 * 60 * 60 * 1000 }, // Cookie expiration in milliseconds
   })
 );
 
