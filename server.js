@@ -143,7 +143,7 @@ app.use(
 );
 
 // Start the Server (Move this to the end)
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 
 // Mongoose Schema and Model
 const stoneSchema = new mongoose.Schema({
